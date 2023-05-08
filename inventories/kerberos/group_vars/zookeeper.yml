@@ -1,0 +1,21 @@
+# Zookeeper configurations
+
+zookeeper_interface_name: eth1
+
+zookeeper_max_heap: 512M
+zookeeper_min_heap: 512M
+
+zookeeper_auth_type: gssapi
+zookeeper_auth_quorum_enabled: true
+zookeeper_auth_client_enabled: true
+
+zookeeper_kerberos_principal: "zookeeper/{{ inventory_hostname }}@EXAMPLE.REDHAT.COM"
+
+zookeeper_conf_quorum_enable_sasl: true
+zookeeper_conf_quorum_learner_require_sasl: true
+zookeeper_conf_quorum_server_require_sasl: true
+
+zookeeper_jaas_debug: true
+
+zookeeper_java_opts:
+  - -Dsun.security.krb5.debug=true

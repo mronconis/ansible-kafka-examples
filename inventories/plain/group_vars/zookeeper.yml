@@ -1,0 +1,7 @@
+# Zookeeper configurations
+
+zookeeper_interface_name: eth1
+
+zookeeper_max_heap: 512M
+zookeeper_min_heap: 512M
+

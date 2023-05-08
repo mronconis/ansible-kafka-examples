@@ -1,0 +1,7 @@
+---
+- name: Setup a cluster
+  hosts: all
+  roles:
+    - saiello.kafka.kafka_install
+    - saiello.kafka.kafka_systemd_zookeeper
+    - saiello.kafka.kafka_systemd_broker

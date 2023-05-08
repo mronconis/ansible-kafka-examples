@@ -1,0 +1,6 @@
+.venv
+.vagrant
+kafka_*.tgz
+collections
+.DS_Store
+files/kerberos/keytabs/kafka*
