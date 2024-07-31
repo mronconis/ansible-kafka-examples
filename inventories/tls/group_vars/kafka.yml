@@ -1,0 +1,50 @@
+# Kafka configurations
+inventory_name: tls
+
+kafka_prereqs_setup_openjdk_package_name: java-11-openjdk
+
+kafka_max_heap: 1G
+kafka_min_heap: 1G
+
+kafka_log4j_dir: /var/log/kafka
+kafka_log_dirs:
+  - /var/data/kafka
+
+kafka_tls_config:
+  enabled: true
+  trustedCA:
+    file: "files/{{ inventory_name }}/certs/ca.crt"
+    location: "{{ kafka_home }}/security/ansible_kafka-ca.crt"
+  keystore:
+    file: "files/{{ inventory_name }}/certs/kafka.p12"
+    location: "{{ kafka_home }}/security/ansible_kafka-keystore.p12"
+    password: 123456
+    type: PKCS12
+
+kafka_listeners:
+  - name: TLS
+    port: 9093
+    tls: true
+    authentication:
+      type: tls
+  - name: BROKER
+    port: 9094
+    tls: true
+    authentication:
+      type: tls
+
+kafka_inter_broker_listener_name: BROKER
+
+kafka_admin_listener_name: TLS
+
+kafka_admin:
+  listener_name: TLS
+
+#TODO: configure admin client
+kafka_skip_verify_under_replicated: true
+
+kafka_additional_conf:
+  auto.create.topics.enable: 'false'
+
+kafka_java_opts:
+  - -Djavax.net.debug=all

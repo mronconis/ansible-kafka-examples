@@ -1,0 +1,25 @@
+# Zookeeper configurations
+
+zookeeper_interface_name: eth1
+
+zookeeper_max_heap: 512M
+zookeeper_min_heap: 512M
+
+# Security
+zookeeper_auth_client_enabled: true
+zookeeper_auth_quorum_enabled: true
+zookeeper_auth_type: tls
+
+zookeeper_tls_config:
+  enabled: true
+  trustedCA:
+    file: "files/{{ inventory_name }}/certs/ca.crt"
+    location: "{{ kafka_home }}/security/ansible_zk-ca.crt"
+  keystore:
+    file: "files/{{ inventory_name }}/certs/zk.p12"
+    location: "{{ kafka_home }}/security/ansible_zk-keystore.p12"
+    password: 123456
+    type: PKCS12
+
+zookeeper_java_opts:
+  - -Djavax.net.debug=all

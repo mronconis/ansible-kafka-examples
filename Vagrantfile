@@ -24,7 +24,7 @@ BROKER_REPLICAS=3
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/7"
   config.vm.synced_folder "files/#{inventory}", "/vagrant"
-  
+
   if inventory == 'kerberos'
     # Kerberos (https://access.redhat.com/articles/5203171)
     config.vm.define "dc" do |dc|
@@ -42,6 +42,12 @@ Vagrant.configure("2") do |config|
       trigger.only_on = "dc"
       trigger.run = {path: "./files/kerberos/server/scripts/copy-keytabs.sh"}
     end
+
+    # Fix CentOS baseurl repo
+    machine.vm.provision "shell", inline: <<-SHELL
+      sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=https://mirror.nsc.liu.se/centos-store|g" /etc/yum.repos.d/CentOS-*
+      sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*
+    SHELL
   end
 
   # Kafka/Zk
@@ -51,16 +57,11 @@ Vagrant.configure("2") do |config|
       machine.vm.network "private_network", ip: "#{IP_NW}#{IP_START_BROKER+machine_id}"
       machine.vm.network "forwarded_port", id: "ssh", guest: 22, host: "220#{machine_id}", auto_correct: false
 
-      if inventory == 'plain'
-        machine.vm.provision "shell", inline: <<-SHELL
-          # Empty /etc/hosts file
-          echo -n > /etc/hosts
-          # Add entries to /etc/hosts file
-          for i in $(seq #{BROKER_REPLICAS}); do
-            echo "#{IP_NW}$((#{IP_START_BROKER} + $i)) kafka$i kafka$i.example.redhat.com" >> /etc/hosts
-          done
-        SHELL
-      end
+      # Fix CentOS baseurl repo
+      machine.vm.provision "shell", inline: <<-SHELL
+        sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=https://mirror.nsc.liu.se/centos-store|g" /etc/yum.repos.d/CentOS-*
+        sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*
+      SHELL
       
       if inventory == 'kerberos'
         machine.vm.provision "shell", inline: <<-SHELL

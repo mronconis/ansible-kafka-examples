@@ -1,7 +1,10 @@
 # Kafka configurations
 inventory_name: kerberos
 
-kafka_home: /opt/kafka/kafka_2.13-3.3.1
+amqstreams_version: "2.5.0"
+amqstreams_enable: true
+
+kafka_home: /opt/kafka/kafka_2.13-3.5.0.redhat-00010
 
 kafka_prereqs_setup_openjdk_package_name: java-11-openjdk
 
@@ -37,10 +40,10 @@ kafka_authorization:
     - User:admin
 
 kafka_inter_broker_listener_name: GSSAPI
-kafka_admin_listener_name: GSSAPI
+kafka_admin_listener_name: SCRAM
 
 kafka_admin:
-  listener_name: GSSAPI
+  listener_name: SCRAM
 
 kafka_additional_conf:
   auto.create.topics.enable: 'false'

@@ -38,8 +38,29 @@ Stop VMs
 vagrant --inventory=plain -- destroy --force
 ```
 
-## Kafka/ZK SASL mTLS
+## Kafka/ZK mTLS
+Generate certs
+```
+make -C files/tls/ca
+make -C files/tls/ca install
+```
 
+Start VMs
+```
+vagrant --inventory=tls -- up --provision
+```
+
+Stop VMs
+```
+vagrant --inventory=tls -- destroy --force
+```
+
+Delete certs
+```
+make -C files/tls/ca clean
+```
+
+## Kafka/ZK SASL SCRAM
 TBD.
 
 ## Kafka/ZK SASL Kerberos
@@ -52,6 +73,7 @@ Stop VMs
 ```
 vagrant --inventory=kerberos -- destroy --force
 ```
+
 ## Kafka/ZK SASL OAuth
 
 TBD.

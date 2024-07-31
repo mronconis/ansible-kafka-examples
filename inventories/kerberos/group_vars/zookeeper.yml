@@ -5,6 +5,7 @@ zookeeper_interface_name: eth1
 zookeeper_max_heap: 512M
 zookeeper_min_heap: 512M
 
+# Security
 zookeeper_auth_type: gssapi
 zookeeper_auth_quorum_enabled: true
 zookeeper_auth_client_enabled: true
